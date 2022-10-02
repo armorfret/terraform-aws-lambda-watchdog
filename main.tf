@@ -36,7 +36,7 @@ resource "aws_cloudwatch_event_rule" "scan" {
 }
 
 resource "aws_cloudwatch_event_target" "scan" {
-  arn  = "${module.apigw.execution_arn}/GET"
+  arn  = "${module.apigw.execution_arn}/GET/*"
   rule = aws_cloudwatch_event_rule.scan.id
 
   http_target {
