@@ -44,12 +44,6 @@ resource "aws_cloudwatch_event_target" "scan" {
   }
 }
 
-resource "aws_cloudwatch_event_target" "scan" {
-  rule      = aws_cloudwatch_event_rule.scan.name
-  target_id = "invoke_hellolinodians"
-  arn       = module.lambda.arn
-}
-
 module "publish_user" {
   source         = "armorfret/s3-publish/aws"
   version        = "0.2.4"
