@@ -123,8 +123,8 @@ resource "aws_cloudwatch_metric_alarm" "runs" {
   statistic           = "Maximum"
   threshold           = "1"
 
-  dimensions {
-    RuleName = "watchdog_akerl-watchdog-site_scan"
+  dimensions = {
+    RuleName = aws_cloudwatch_event_rule.scan.id
   }
 
   alarm_description         = "Monitor for gaps in invocation of watchdog"
@@ -142,8 +142,8 @@ resource "aws_cloudwatch_metric_alarm" "fails" {
   statistic           = "Maximum"
   threshold           = "0"
 
-  dimensions {
-    RuleName = "watchdog_akerl-watchdog-site_scan"
+  dimensions = {
+    RuleName = aws_cloudwatch_event_rule.scan.id
   }
 
   alarm_description         = "Monitor for fails in invocation of watchdog"
