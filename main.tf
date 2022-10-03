@@ -44,7 +44,8 @@ resource "aws_cloudwatch_event_target" "scan" {
   }
 
   retry_policy {
-    maximum_retry_attempts = 5
+    maximum_event_age_in_seconds = 60
+    maximum_retry_attempts       = 5
   }
 }
 
