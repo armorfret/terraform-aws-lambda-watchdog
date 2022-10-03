@@ -36,11 +36,15 @@ resource "aws_cloudwatch_event_rule" "scan" {
 }
 
 resource "aws_cloudwatch_event_target" "scan" {
-  arn  = "${module.apigw.execution_arn}/*/*/GET"
+  arn  = "${module.apigw.execution_arn}/*/*"
   rule = aws_cloudwatch_event_rule.scan.id
 
   http_target {
     path_parameter_values = ["scan"]
+  }
+
+  retry_policy {
+    maximum_retry_attempts = 5
   }
 }
 
