@@ -102,3 +102,51 @@ data "aws_iam_policy_document" "lambda_perms" {
     ]
   }
 }
+
+resource "aws_sns_topic" "this" {
+  name = var.config_bucket
+}
+
+resource "aws_sns_topic_subscription" "this" {
+  topic_arn = aws_sns_topic.this.arn
+  protocol  = "email"
+  endpoint  = var.alert_email
+}
+
+resource "aws_cloudwatch_metric_alarm" "runs" {
+  alarm_name          = "${var.config_bucket}-runs"
+  comparison_operator = "LessThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "Invocations"
+  namespace           = "AWS/Events"
+  period              = "7200"
+  statistic           = "Maximum"
+  threshold           = "1"
+
+  dimensions {
+    RuleName = "watchdog_akerl-watchdog-site_scan"
+  }
+
+  alarm_description         = "Monitor for gaps in invocation of watchdog"
+  alarm_actions             = [aws_sns_topic.this.arn]
+  insufficient_data_actions = [aws_sns_topic.this.arn]
+}
+
+resource "aws_cloudwatch_metric_alarm" "fails" {
+  alarm_name          = "${var.config_bucket}-fails"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = "FailedInvocations"
+  namespace           = "AWS/Events"
+  period              = "7200"
+  statistic           = "Maximum"
+  threshold           = "0"
+
+  dimensions {
+    RuleName = "watchdog_akerl-watchdog-site_scan"
+  }
+
+  alarm_description         = "Monitor for fails in invocation of watchdog"
+  alarm_actions             = [aws_sns_topic.this.arn]
+  insufficient_data_actions = [aws_sns_topic.this.arn]
+}

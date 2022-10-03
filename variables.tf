@@ -34,3 +34,8 @@ variable "rate" {
   type        = string
   default     = "1 hour"
 }
+
+variable "alert_email" {
+  description = "Address to alert if watchdog stops running or fails"
+  type        = string
+}
