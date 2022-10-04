@@ -32,7 +32,7 @@ module "apigw" {
 resource "aws_cloudwatch_event_rule" "scan" {
   name                = "watchdog_${var.config_bucket}_scan"
   description         = "Hit API Gateway"
-  schedule_expression = "rate(${var.rate})"
+  schedule_expression = "rate(${var.rate} seconds)"
 }
 
 resource "aws_cloudwatch_event_target" "scan" {
@@ -119,7 +119,7 @@ resource "aws_cloudwatch_metric_alarm" "runs" {
   evaluation_periods  = "1"
   metric_name         = "Invocations"
   namespace           = "AWS/Events"
-  period              = "7200"
+  period              = var.rate * 1.5
   statistic           = "Maximum"
   threshold           = "1"
 
@@ -139,9 +139,9 @@ resource "aws_cloudwatch_metric_alarm" "fails" {
   evaluation_periods  = "1"
   metric_name         = "FailedInvocations"
   namespace           = "AWS/Events"
-  period              = "7200"
+  period              = var.rate * 2
   statistic           = "Maximum"
-  threshold           = "0"
+  threshold           = "1"
 
   dimensions = {
     RuleName = aws_cloudwatch_event_rule.scan.id

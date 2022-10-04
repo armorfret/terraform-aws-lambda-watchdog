@@ -30,9 +30,9 @@ variable "hostname" {
 }
 
 variable "rate" {
-  description = "Frequency at which to invoke Lambda"
-  type        = string
-  default     = "1 hour"
+  description = "Frequency in seconds at which to invoke Lambda"
+  type        = number
+  default     = 3600
 }
 
 variable "alert_email" {
