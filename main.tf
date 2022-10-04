@@ -130,6 +130,7 @@ resource "aws_cloudwatch_metric_alarm" "runs" {
   alarm_description         = "Monitor for gaps in invocation of watchdog"
   alarm_actions             = [aws_sns_topic.this.arn]
   insufficient_data_actions = [aws_sns_topic.this.arn]
+  treat_missing_data        = "breaching"
 }
 
 resource "aws_cloudwatch_metric_alarm" "fails" {
