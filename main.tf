@@ -148,5 +148,5 @@ resource "aws_cloudwatch_metric_alarm" "fails" {
 
   alarm_description         = "Monitor for fails in invocation of watchdog"
   alarm_actions             = [aws_sns_topic.this.arn]
-  insufficient_data_actions = [aws_sns_topic.this.arn]
+  insufficient_data_actions = []
 }
