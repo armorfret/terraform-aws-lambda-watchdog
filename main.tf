@@ -32,7 +32,7 @@ module "apigw" {
 resource "aws_cloudwatch_event_rule" "scan" {
   name                = "watchdog_${var.config_bucket}_scan"
   description         = "Hit API Gateway"
-  schedule_expression = "rate(${var.rate} seconds)"
+  schedule_expression = "rate(${floor(var.rate / 60)} minutes)"
 }
 
 resource "aws_cloudwatch_event_target" "scan" {
