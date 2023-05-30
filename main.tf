@@ -2,14 +2,14 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
   }
 }
 
 module "apigw" {
   source  = "armorfret/apigw-lambda/aws"
-  version = "0.3.0"
+  version = "0.4.0"
 
   source_bucket  = var.lambda_bucket
   source_version = var.lambda_version
@@ -51,14 +51,14 @@ resource "aws_cloudwatch_event_target" "scan" {
 
 module "publish_user" {
   source         = "armorfret/s3-publish/aws"
-  version        = "0.6.1"
+  version        = "0.7.0"
   logging_bucket = var.logging_bucket
   publish_bucket = var.data_bucket
 }
 
 module "config_user" {
   source         = "armorfret/s3-publish/aws"
-  version        = "0.6.1"
+  version        = "0.7.0"
   logging_bucket = var.logging_bucket
   publish_bucket = var.config_bucket
   count          = var.config_bucket == var.data_bucket ? 0 : 1
