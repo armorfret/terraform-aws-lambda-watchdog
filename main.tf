@@ -9,7 +9,7 @@ terraform {
 
 module "apigw" {
   source  = "armorfret/apigw-lambda/aws"
-  version = "0.4.0"
+  version = "0.4.1"
 
   source_bucket  = var.lambda_bucket
   source_version = var.lambda_version
