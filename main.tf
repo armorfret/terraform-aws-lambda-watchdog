@@ -9,7 +9,7 @@ terraform {
 
 module "apigw" {
   source  = "armorfret/apigw-lambda/aws"
-  version = "0.4.2"
+  version = "0.7.1"
 
   source_bucket  = var.lambda_bucket
   source_version = var.lambda_version
@@ -51,14 +51,14 @@ resource "aws_cloudwatch_event_target" "scan" {
 
 module "publish_user" {
   source         = "armorfret/s3-publish/aws"
-  version        = "0.7.0"
+  version        = "0.8.0"
   logging_bucket = var.logging_bucket
   publish_bucket = var.data_bucket
 }
 
 module "config_user" {
   source         = "armorfret/s3-publish/aws"
-  version        = "0.7.0"
+  version        = "0.8.0"
   logging_bucket = var.logging_bucket
   publish_bucket = var.config_bucket
   count          = var.config_bucket == var.data_bucket ? 0 : 1
@@ -97,14 +97,13 @@ data "aws_iam_policy_document" "lambda_perms" {
       "logs:PutLogEvents",
     ]
 
-    #tfsec:ignore:aws-iam-no-policy-wildcards
     resources = [
-      "arn:aws:logs:*:*:*",
+      "arn:aws:logs:*:*:log-group:/aws/lambda/watchdog_${var.data_bucket}:*",
     ]
   }
 }
 
-resource "aws_sns_topic" "this" {
+resource "aws_sns_topic" "this" { #tfsec:ignore:aws-sns-enable-topic-encryption
   name = var.config_bucket
 }
 
