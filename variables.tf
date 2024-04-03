@@ -39,3 +39,9 @@ variable "alert_email" {
   description = "Address to alert if watchdog stops running or fails"
   type        = string
 }
+
+variable "cloudwatch_retention_in_days" {
+  description = "Days to retain cloudwatch logs"
+  type        = number
+  default     = 30
+}
