@@ -129,7 +129,7 @@ resource "aws_cloudwatch_metric_alarm" "runs" {
   evaluation_periods  = "1"
   metric_name         = "Invocations"
   namespace           = "AWS/Events"
-  period              = var.rate * 1.5
+  period              = var.rate * 2
   statistic           = "Maximum"
   threshold           = "1"
 
@@ -149,7 +149,7 @@ resource "aws_cloudwatch_metric_alarm" "fails" {
   evaluation_periods  = "1"
   metric_name         = "FailedInvocations"
   namespace           = "AWS/Events"
-  period              = var.rate * 2
+  period              = var.rate * 3
   statistic           = "Maximum"
   threshold           = "1"
 
